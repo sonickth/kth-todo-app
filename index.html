@@ -10,13 +10,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
-    <script src="script.js" defer></script>
+    <script type="module" src="script.js"></script>
   </head>
   <body>
     <div class="app-shell">
       <header class="topbar">
         <a class="wordmark" href="#top" aria-label="DAYFORM 홈"><span class="brand-mark" aria-hidden="true"></span>DAYFORM<span class="brand-period">.</span></a>
-        <div class="topbar-note"><span class="live-dot" aria-hidden="true"></span> YOUR DAY, IN ORDER</div>
+        <div class="topbar-note" id="sync-status" role="status" aria-live="polite"><span class="live-dot" aria-hidden="true"></span><span id="sync-status-text">CLOUD CONNECTING</span></div>
         <div class="topbar-date" id="topbar-date"><span id="topbar-date-value"></span><span class="topbar-time" id="topbar-time" aria-label="현재 시각"></span></div>
       </header>
 
