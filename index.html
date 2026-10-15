@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#090a09" />
+    <meta name="description" content="오늘의 할 일을 빠르게 확인하고 관리하는 월간 캘린더 할 일 앱" />
+    <title>DAYFORM — 오늘의 할 일</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="wordmark" href="#top" aria-label="DAYFORM 홈"><span class="brand-mark" aria-hidden="true"></span>DAYFORM<span class="brand-period">.</span></a>
+        <div class="topbar-note"><span class="live-dot" aria-hidden="true"></span> YOUR DAY, IN ORDER</div>
+        <div class="topbar-date" id="topbar-date"></div>
+      </header>
+
+      <main id="top">
+        <section class="intro" aria-labelledby="page-title">
+          <div>
+            <p class="eyebrow">A CLEARER WAY TO PLAN</p>
+            <h1 id="page-title">하루를 정리하고,<br /><span>중요한 일에 집중하세요.</span></h1>
+          </div>
+          <p class="intro-caption">작은 체크 하나가<br />오늘의 리듬을 만듭니다.</p>
+        </section>
+
+        <section class="planner" aria-label="월간 일정 관리">
+          <div class="calendar-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">YOUR MONTH</p>
+                <h2 id="month-title" aria-live="polite"></h2>
+              </div>
+              <div class="month-controls" aria-label="달력 월 이동">
+                <button class="icon-button" id="prev-month" type="button" aria-label="이전 달"><span aria-hidden="true">←</span></button>
+                <button class="icon-button" id="next-month" type="button" aria-label="다음 달"><span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+            <div class="calendar-weekdays" aria-hidden="true">
+              <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+            </div>
+            <div class="calendar-grid" id="calendar-grid" role="grid" aria-label="월간 달력"></div>
+            <div class="calendar-legend"><span><i class="legend-today"></i> 오늘</span><span><i class="legend-task"></i> 할 일 있음</span></div>
+          </div>
+
+          <aside class="tasks-panel" aria-labelledby="tasks-heading">
+            <div class="tasks-topline"><span class="eyebrow">YOUR CHECKLIST</span><span class="task-count" id="task-count">0 ITEMS</span></div>
+            <div class="tasks-heading-row">
+              <div><h2 id="tasks-heading">오늘의 할 일</h2><p class="selected-date" id="selected-date"></p></div>
+              <button class="add-button" id="add-task" type="button"><span aria-hidden="true">＋</span><span>추가</span></button>
+            </div>
+            <div class="progress-wrap" aria-label="완료 진행률"><div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div><span id="progress-label">0%</span></div>
+            <ul class="task-list" id="task-list" aria-live="polite"></ul>
+            <div class="empty-state" id="empty-state" hidden>
+              <span class="empty-symbol" aria-hidden="true">✳</span>
+              <p>아직 등록된 할 일이 없어요.</p>
+              <span>오늘 해야 할 일을 하나씩 적어보세요.</span>
+              <button type="button" id="empty-add">첫 할 일 추가하기 <span aria-hidden="true">↗</span></button>
+            </div>
+            <div class="tasks-footer"><span>FOCUS ON WHAT MATTERS</span><span class="footer-star" aria-hidden="true">✳</span></div>
+          </aside>
+        </section>
+      </main>
+
+      <footer class="site-footer"><span>DAYFORM © <span id="footer-year"></span></span><span>MAKE ROOM FOR WHAT MATTERS.</span></footer>
+    </div>
+
+    <dialog class="task-dialog" id="task-dialog" aria-labelledby="dialog-title">
+      <form id="task-form" novalidate>
+        <div class="dialog-top"><span class="eyebrow">MAKE IT HAPPEN</span><button class="dialog-close" id="close-dialog" type="button" aria-label="닫기">×</button></div>
+        <h2 id="dialog-title">할 일 추가</h2>
+        <p class="dialog-description">하나씩 차근차근, 오늘의 우선순위를 정해보세요.</p>
+        <label for="task-title">할 일</label>
+        <input id="task-title" name="title" type="text" maxlength="100" placeholder="예: 주간 회의 자료 준비" autocomplete="off" required />
+        <label for="task-date">날짜</label>
+        <input id="task-date" name="date" type="date" required />
+        <p class="form-error" id="form-error" role="alert"></p>
+        <div class="dialog-actions"><button class="delete-button" id="delete-task" type="button" hidden>삭제</button><button class="save-button" type="submit">저장하기 <span aria-hidden="true">↗</span></button></div>
+      </form>
+    </dialog>
+  </body>
+</html>
