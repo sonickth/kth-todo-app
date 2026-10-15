@@ -26,6 +26,8 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 .topbar-note, .topbar-date { font: 10px var(--mono); letter-spacing: .13em; color: var(--muted); }
 .topbar-note { justify-self: center; display: flex; align-items: center; gap: 9px; }
 .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px #c7ff3280; }
+.topbar-note.is-error { color: var(--pink); }
+.topbar-note.is-error .live-dot { background: var(--pink); box-shadow: 0 0 12px #ff4d9280; }
 .topbar-date { justify-self: end; display: flex; align-items: center; gap: 12px; }
 .topbar-time { padding-left: 12px; border-left: 1px solid var(--line); color: var(--green); font: 11px var(--mono); letter-spacing: .06em; font-variant-numeric: tabular-nums; }
 main { padding-bottom: 58px; }
