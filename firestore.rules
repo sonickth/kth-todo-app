@@ -1,0 +1,28 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/tasks/{taskId} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function validTask() {
+        return request.resource.data.keys().hasAll(['title', 'date', 'completed', 'createdAt'])
+          && request.resource.data.keys().hasOnly(['title', 'date', 'completed', 'createdAt'])
+          && request.resource.data.title is string
+          && request.resource.data.title.size() > 0
+          && request.resource.data.title.size() <= 100
+          && request.resource.data.date is string
+          && request.resource.data.date.matches('^\\d{4}-\\d{2}-\\d{2}$')
+          && request.resource.data.completed is bool
+          && request.resource.data.createdAt is int;
+      }
+
+      allow get, list: if isOwner();
+      allow create: if isOwner() && validTask();
+      allow update: if isOwner() && validTask();
+      allow delete: if isOwner();
+    }
+  }
+}
