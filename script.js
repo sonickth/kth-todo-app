@@ -10,7 +10,8 @@
   let editingId = null;
 
   const elements = {
-    topbarDate: document.getElementById("topbar-date"),
+    topbarDate: document.getElementById("topbar-date-value"),
+    topbarTime: document.getElementById("topbar-time"),
     footerYear: document.getElementById("footer-year"),
     monthTitle: document.getElementById("month-title"),
     calendarGrid: document.getElementById("calendar-grid"),
@@ -71,8 +72,14 @@
   }
 
   function renderHeader() {
-    elements.topbarDate.textContent = formatDate(today, { year: "numeric", month: "2-digit", day: "2-digit", weekday: "short" }).replace(/\.\s*/g, ". ");
     elements.footerYear.textContent = String(today.getFullYear());
+    updateClock();
+  }
+
+  function updateClock() {
+    const now = new Date();
+    elements.topbarDate.textContent = formatDate(now, { year: "numeric", month: "2-digit", day: "2-digit", weekday: "short" }).replace(/\.\s*/g, ". ");
+    elements.topbarTime.textContent = formatDate(now, { hour: "2-digit", minute: "2-digit", hour12: false });
   }
 
   function renderCalendar() {
@@ -263,5 +270,6 @@
   }
 
   renderHeader();
+  window.setInterval(updateClock, 1000);
   render();
 })();
