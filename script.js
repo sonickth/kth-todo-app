@@ -34,6 +34,7 @@ let tasks = [];
 let editingId = null;
 let activeUser = null;
 let stopListening = null;
+let authErrorMessage = "";
 
 const elements = {
   topbarDate: document.getElementById("topbar-date-value"),
@@ -95,6 +96,19 @@ function formatDate(date, options) {
 function setSyncStatus(message, isError = false) {
   elements.syncStatusText.textContent = message;
   elements.syncStatus.classList.toggle("is-error", isError);
+}
+
+function getAuthErrorMessage(error) {
+  switch (error.code) {
+    case "auth/operation-not-allowed":
+      return "Firebase 콘솔에서 Authentication > Sign-in method > 익명(Anonymous) 로그인을 활성화해주세요.";
+    case "auth/unauthorized-domain":
+      return "현재 사이트 주소가 Firebase 인증 허용 도메인에 없습니다. Authentication > Settings > Authorized domains에 현재 도메인을 추가해주세요.";
+    case "auth/network-request-failed":
+      return "Firebase 인증 서버에 연결할 수 없습니다. 인터넷 연결과 사이트 주소(http 또는 https)를 확인해주세요.";
+    default:
+      return `Firebase 익명 인증에 실패했습니다 (${error.code || "알 수 없는 오류"}). Firebase Authentication 설정과 브라우저 콘솔을 확인해주세요.`;
+  }
 }
 
 function showSaveError(error) {
@@ -292,7 +306,7 @@ elements.form.addEventListener("submit", async (event) => {
     return;
   }
   if (!activeUser) {
-    elements.formError.textContent = "Firebase 연결 중입니다. 잠시 후 다시 시도해주세요.";
+    elements.formError.textContent = authErrorMessage || "Firebase에 연결 중입니다. 연결이 완료된 후 다시 저장해주세요.";
     return;
   }
   elements.saveButton.disabled = true;
@@ -332,9 +346,12 @@ elements.deleteButton.addEventListener("click", async () => {
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
+    activeUser = null;
     setSyncStatus("CLOUD CONNECTING");
     return;
   }
+  authErrorMessage = "";
+  elements.formError.textContent = "";
   activeUser = user;
   try {
     await migrateLegacyTasks(user);
@@ -357,9 +374,12 @@ onAuthStateChanged(auth, async (user) => {
 
 signInAnonymously(auth).catch((error) => {
   console.error("Anonymous sign-in failed:", error);
+  authErrorMessage = getAuthErrorMessage(error);
+  elements.formError.textContent = authErrorMessage;
   setSyncStatus("CLOUD ERROR", true);
 });
 
 renderHeader();
 window.setInterval(updateClock, 1000);
 render();
+
